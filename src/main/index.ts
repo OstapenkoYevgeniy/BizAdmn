@@ -2,6 +2,14 @@ import { app, shell, BrowserWindow, ipcMain } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
+import { db } from './database/sqlite'
+import { SettingsServices } from './services/Settings.services'
+
+const settingsServices: SettingsServices = new SettingsServices(db)
+
+ipcMain.on('exit', event => {
+  app.quit()
+})
 
 function createWindow(): void {
   // Create the browser window.
@@ -15,8 +23,12 @@ function createWindow(): void {
     autoHideMenuBar: true,
     ...(process.platform === 'linux' ? { icon } : {}),
     webPreferences: {
+      nodeIntegration: false,
+      contextIsolation: true,
       preload: join(__dirname, '../preload/index.js'),
-      sandbox: false
+      sandbox: true,
+      webSecurity: true,
+      allowRunningInsecureContent: false
     }
   })
 

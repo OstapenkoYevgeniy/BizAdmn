@@ -1,0 +1,86 @@
+2. Ошибка: отсутствие транзакций при продаже
+
+Очень распространённая ошибка POS.
+
+Пример неправильного кода:
+
+db.prepare("INSERT INTO sales ...").run()
+
+db.prepare("INSERT INTO sale_items ...").run()
+
+db.prepare("UPDATE products SET stock = stock - ?").run()
+
+
+Если в этот момент:
+
+пропал свет
+или завис компьютер
+
+
+получаем:
+
+sale создан
+items нет
+остатки не списаны
+
+
+База становится логически повреждённой.
+
+Правильный вариант
+
+Использовать одну транзакцию.
+
+const createSale = db.transaction((sale) => {
+
+  db.prepare(`
+    INSERT INTO sales (...)
+  `).run(...)
+
+  for (const item of sale.items) {
+
+    db.prepare(`
+      INSERT INTO sale_items (...)
+    `).run(...)
+
+    db.prepare(`
+      UPDATE products
+      SET stock = stock - ?
+    `).run(item.qty)
+  }
+
+})
+
+
+Теперь работает ACID.
+
+Если сбой:
+
+ROLLBACK
+
+
+И база остаётся консистентной.
+
+
+Бонус: 4-я критическая ошибка
+отсутствие авто-бэкапов SQLite
+
+Даже если всё правильно, база может повредиться:
+
+сбой SSD
+
+выключение питания
+
+баг драйвера
+
+Поэтому POS должен делать автоматический backup.
+
+Пример
+
+Каждые 30 минут:
+
+pos.db
+↓
+pos-backup-2026-03-05.db
+
+
+SQLite позволяет это делать без остановки работы.

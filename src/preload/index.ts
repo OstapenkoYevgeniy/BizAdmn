@@ -1,5 +1,13 @@
 import { contextBridge } from 'electron'
 import { electronAPI } from '@electron-toolkit/preload'
+import ipcRenderer = Electron.ipcRenderer
+
+contextBridge.exposeInMainWorld('electronAPI', {
+  exitApp: () => {
+    ipcRenderer.send('exit')
+    console.log('fuck')
+  }
+})
 
 // Custom APIs for renderer
 const api = {}
