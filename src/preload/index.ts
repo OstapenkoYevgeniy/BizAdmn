@@ -6,9 +6,9 @@ contextBridge.exposeInMainWorld('api', {
   },
 
   settings: {
-    getIp: () => ipcRenderer.invoke('settings:getIp'),
+    getIp: () => ipcRenderer.invoke('settings:getSocket'),
 
-    setIp: (ip: string) => ipcRenderer.invoke('settings:setIp', ip)
+    setIp: (ip: string) => ipcRenderer.invoke('settings:setSocket', ip)
   }
 })
 

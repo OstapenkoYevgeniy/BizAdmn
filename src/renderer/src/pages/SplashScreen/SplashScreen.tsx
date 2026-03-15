@@ -1,16 +1,14 @@
-import { useNavigate } from 'react-router-dom'
 import st from './SplashScreen.module.css'
-import ipcRenderer = Electron.ipcRenderer
 
 export default function SplashScreen() {
-  const navigate = useNavigate()
+  // const navigate = useNavigate()
 
   const handleExit = () => {
-    window.electronApi.exitApp()
+    window.api.app.exit()
   }
 
-  const handleEnter = () => {
-    window.api.app.exit()
+  const handleEnter = async () => {
+    console.log(await window.api.settings.getSocket())
     alert('kek')
   }
 

@@ -9,11 +9,11 @@ ipcMain.on("exit", () => {
 })
 
 ipcMain.handle("settings:getIp", () => {
-  return appSettings.getIp()
+  return appSettings.getSocket()
 })
 
-ipcMain.handle("settings:setIp", (_event, ip: string) => {
-  appSettings.setIp(ip)
+ipcMain.handle("settings:setIp", (_event, socket: string) => {
+  appSettings.setSocket(socket)
 })
 
 function createWindow(): void {
@@ -39,6 +39,8 @@ function createWindow(): void {
 
   mainWindow.on('ready-to-show', () => {
     mainWindow.show()
+
+    mainWindow.webContents.openDevTools({ mode: 'detach' })
   })
 
   mainWindow.webContents.setWindowOpenHandler((details) => {
@@ -99,7 +101,7 @@ app.on('window-all-closed', () => {
 
 // отсебятина
 function debug(): void {
-  const ip: string | undefined = appSettings.getIp()
+  const ip: string | undefined = appSettings.getSocket()
 
   const id: string | undefined = appSettings.getId()
 

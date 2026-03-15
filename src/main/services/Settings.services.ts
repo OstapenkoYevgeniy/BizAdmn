@@ -23,11 +23,11 @@ function setSetting(key: string, value: string): void {
 }
 
 const appSettings = {
-  getIp() {
-    return getSetting('ip')
+  getSocket() {
+    return getSetting('socket')
   },
-  setIp(value: string) {
-    setSetting('ip', value)
+  setSocket(value: string) {
+    setSetting('socket', value)
   },
   getId() {
     return getSetting('id')
@@ -35,12 +35,7 @@ const appSettings = {
   setId(value: string) {
     setSetting('id', value)
   },
-  getPort() {
-    return getSetting('port')
-  },
-  setPort(value) {
-    setSetting('port', value)
-  }
+
 }
 
 export default appSettings

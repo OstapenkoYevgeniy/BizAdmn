@@ -4,10 +4,12 @@ import Dashboard from './pages/Dashboard'
 
 // импорт Bootstrap CSS
 import 'bootstrap/dist/css/bootstrap.min.css'
-import SplashScreen from '@renderer/pages/SplashScreen/SplashScreen'
+import SplashScreen from './pages/SplashScreen/SplashScreen'
+import { JSX } from 'react'
 
-export default function App(): Element {
-  const token = localStorage.getItem('token')
+
+export default function App(): JSX.Element {
+  // const token = localStorage.getItem('token')
 
   return (
     <>
