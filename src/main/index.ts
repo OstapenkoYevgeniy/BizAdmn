@@ -2,13 +2,18 @@ import { app, shell, BrowserWindow, ipcMain } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
-import { db } from './database/sqlite'
-import { SettingsServices } from './services/Settings.services'
+import appSettings from './services/Settings.services'
 
-const settingsServices: SettingsServices = new SettingsServices(db)
-
-ipcMain.on('exit', event => {
+ipcMain.on("exit", () => {
   app.quit()
+})
+
+ipcMain.handle("settings:getIp", () => {
+  return appSettings.getIp()
+})
+
+ipcMain.handle("settings:setIp", (_event, ip: string) => {
+  appSettings.setIp(ip)
 })
 
 function createWindow(): void {
@@ -26,7 +31,7 @@ function createWindow(): void {
       nodeIntegration: false,
       contextIsolation: true,
       preload: join(__dirname, '../preload/index.js'),
-      sandbox: true,
+      sandbox: false,
       webSecurity: true,
       allowRunningInsecureContent: false
     }
@@ -55,6 +60,9 @@ function createWindow(): void {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
+  // от себя
+  debug()
+
   // Set app user model id for windows
   electronApp.setAppUserModelId('com.electron')
 
@@ -88,3 +96,13 @@ app.on('window-all-closed', () => {
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
+
+// отсебятина
+function debug(): void {
+  const ip: string | undefined = appSettings.getIp()
+
+  const id: string | undefined = appSettings.getId()
+
+  console.log(ip)
+  console.log(id)
+}

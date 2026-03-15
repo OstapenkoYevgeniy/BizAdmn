@@ -10,6 +10,7 @@ export default function SplashScreen() {
   }
 
   const handleEnter = () => {
+    window.api.app.exit()
     alert('kek')
   }
 
