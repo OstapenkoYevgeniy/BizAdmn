@@ -1,8 +1,12 @@
 {
+  "compilerOptions": {
+    // ... другие настройки
+    "typeRoots": ["./node_modules/@types", "./src/types"]
+  },
   "files": [],
   "references": [{ "path": "./tsconfig.node.json"}, { "path": "./tsconfig.web.json"}],
   "include": [
-    "src/renderer",
-    "src/renderer/types/**/*.d.ts"   // <-- здесь подключаем типы
+    "src/**/*",
+    "src/types/**/*.d.ts"  // добавьте эту строку
   ]
 }
